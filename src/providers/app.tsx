@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { HelmetProvider } from 'react-helmet-async';
 import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -32,21 +31,19 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <React.Suspense
       fallback={
-        <div className="flex items-center justify-center w-screen h-screen">
+        <div className="h-screen w-screen flex items-center justify-center">
           <Spinner size="xl" />
         </div>
       }
     >
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <HelmetProvider>
-          <QueryClientProvider client={queryClient}>
-            {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
-            <Notifications />
-            <AuthProvider>
-              <Router>{children}</Router>
-            </AuthProvider>
-          </QueryClientProvider>
-        </HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
+          <Notifications />
+          <AuthProvider>
+            <Router>{children}</Router>
+          </AuthProvider>
+        </QueryClientProvider>
       </ErrorBoundary>
     </React.Suspense>
   );
